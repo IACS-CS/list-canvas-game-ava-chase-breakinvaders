@@ -1,7 +1,7 @@
 /* Main game file: main.js */
-/* Game: [Your Game Name Here] */
-/* Authors: [Your Name(s) Here] */
-/* Description: [Short description of your game here] */
+/* Game: BreakInvaders */
+/* Authors: Avalynn Annarelli, Chase DeLuca */
+/* Description: Combination of breakout and space invaders, where the invaders are killed via the breakout ball/paddle.*/
 /* Citations: [List any resources, libraries, tutorials, etc you used here] 
 /* Note: If you use significant AI help you should cite that here as well */
 /* including summaries of prompts and/or interactions you had with the AI */
@@ -18,6 +18,21 @@ import { GameInterface } from 'simple-canvas-library';
 let gi = new GameInterface();
 
 /* Variables: Top-Level variables defined here are used to hold game state */
+let ball = {
+  x : 10,
+  y : 10,
+  velocity: {
+      x : 10,
+      y : 10,
+  }
+}
+
+const BRICK_WIDTH = 100;
+CONST BRICK_HEIGHT = 20
+let bricks = [];
+for (let y = 0; y<BRICK_HEIGHT * 4; y += BRICK_HEIGHT )
+  for (let x = 0, x < BRICK_WIDTH*12; x+=BRICK_WIDTH)
+    bricks.push({x:x, y:y}) 
 
 
 /* Drawing Functions */
@@ -38,7 +53,7 @@ gi.addDrawing(
 /* Example: Mouse click handler (you can change to handle 
 any type of event -- keydown, mousemove, etc) */
 
-gi.addHandler(
+/* gi.addHandler(
   "click",
   function ({ event, x, y }) {
     // Your click handling code here...
