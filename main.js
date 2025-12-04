@@ -28,7 +28,7 @@ let ball = {
 }
 
 const BRICK_WIDTH = 100;
-CONST BRICK_HEIGHT = 20
+const BRICK_HEIGHT = 20
 let bricks = [];
 for (let y = 0; y<BRICK_HEIGHT * 4; y += BRICK_HEIGHT )
   for (let x = 0, x < BRICK_WIDTH*12; x+=BRICK_WIDTH)
