@@ -982,33 +982,73 @@ class T extends p {
 
 let gi = new T();
 
+/* Variables: Top-Level variables defined here are used to hold game state */
+let ball = {
+  x : 100,
+  y : 100,
+  vel: {
+      x : 100,
+      y : 100,
+  }
+};
+
+let paddle = {
+  x : 10,
+  size : 100,
+};
+
+
+
+/*const BRICK_WIDTH = 100;
+const BRICK_HEIGHT = 20
+let bricks = [];
+for (let y = 0; y < BRICK_HEIGHT * 4; y += BRICK_HEIGHT)
+  for (let x = 0; x < BRICK_WIDTH * 12; x += BRICK_WIDTH)
+    bricks.push({x:x, y:y}) 
+*/
+
+
 
 /* Drawing Functions */
 
-/* Example drawing function: you can add multiple drawing functions
-that will be called in sequence each frame. It's a good idea to do 
-one function per each object you are putting on screen, and you
-may then want to break your drawing function down into sub-functions
-to make it easier to read/follow */
+function drawPaddle({ ctx, height }) {
+   ctx.fillStyle = "white";
+    ctx.fillRect(paddle.x, height-30, paddle.size, 20);
+}
+function drawBall({ ctx }) {
+  ctx.fillStyle = "white";
+  ctx.beginPath();
+  ctx.arc(ball.x, ball.y, 10, 0, 2 * Math.PI);
+  ctx.fill();
+  return
+}
+function moveBall({ stepTime, width, height }){
+  // dt = deltatime which uses seconds
+  const dt = stepTime / 1000;
+  ball.x += ball.vel.x * dt;
+  ball.y += ball.vel.y * dt;
+}
+
 gi.addDrawing(
   function ({ ctx, width, height, elapsed, stepTime }) {
-    // Your drawing code here...    
+   drawPaddle({ ctx, height});
+   drawBall({ ctx });
+   moveBall({ stepTime });
+   
   }
 );
 
+
 /* Input Handlers */
 
-/* Example: Mouse click handler (you can change to handle 
-any type of event -- keydown, mousemove, etc) */
-
-/* gi.addHandler(
-  "click",
-  function ({ event, x, y }) {
-    // Your click handling code here...
+ gi.addHandler(
+  "mousemove",
+  function ({ x, y }) {
+    paddle.x = x - 50;
   }
-)
+);
 
 
 /* Run the game */
 gi.run();
-//# sourceMappingURL=index-db0f2b52.js.map
+//# sourceMappingURL=index-9f2cea9f.js.map
