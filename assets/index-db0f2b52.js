@@ -982,8 +982,6 @@ class T extends p {
 
 let gi = new T();
 
-/* Variables: Top-Level variables defined here are used to hold game state */
-
 
 /* Drawing Functions */
 
@@ -1003,14 +1001,14 @@ gi.addDrawing(
 /* Example: Mouse click handler (you can change to handle 
 any type of event -- keydown, mousemove, etc) */
 
-gi.addHandler(
+/* gi.addHandler(
   "click",
   function ({ event, x, y }) {
     // Your click handling code here...
   }
-);
+)
 
 
 /* Run the game */
 gi.run();
-//# sourceMappingURL=index-ffc8c822.js.map
+//# sourceMappingURL=index-db0f2b52.js.map
