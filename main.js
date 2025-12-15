@@ -14,8 +14,8 @@ let gi = new GameInterface();
 /* Variables: Top-Level variables defined here are used to hold game state */
 let paddleLaserHits = 0;
 let ball = {
-  x: 1300,
-  y: 700,
+  x: 100,
+  y: 100,
   vel: {
     x: 200,
     y: 200,
@@ -26,7 +26,9 @@ const BALL_RADIUS = 10;
 let paddle = {
   x: 1300,
   size: 100,
+  hits: 0,
 };
+let score = 0;
 
 const BRICK_WIDTH = 100;
 const BRICK_HEIGHT = 20;
@@ -90,18 +92,17 @@ function updateLasers({ stepTime, width, height }) {
       l.y < paddleY + paddleH &&
       l.y + l.h > paddleY
     ) {
-      // hit: shrink paddle by 20 but don't let it go below 20
-      paddle.size = (paddle.size - 20);
-      paddleLaserHits += 1;
+      // hit: shrink paddle by 20
+      paddle.size = paddle.size - 20;
+      paddle.hits += 1;
+      if (paddle.size <= 0)
+        loseCondition({width, height})
       // remove the laser
       lasers.splice(i, 1);
     }
   }
 }
-if (paddleLaserHits ==5){
-  alert("Game Over! Your paddle is dead. Thanks for saving the universe, loser.");
-  window.location.reload();
-}
+
 
 /**
  * Draw all active lasers on screen.
@@ -139,7 +140,8 @@ function createBricks({ width, cols = 14, y = 20, gap = 5, rows = 3 }) {
         h: BRICK_HEIGHT,
         alive: true,
       });
-    }y += 25;
+    }
+    y += 25;
   }
 }
 
@@ -171,6 +173,24 @@ function drawBall({ ctx }) {
   ctx.fill();
   return;
 }
+function winCondition ({width}){
+  
+}
+
+function loseCondition({ width, height }) {
+  ball.y = 100;
+  ball.x = 100;
+  score = 0;
+  paddle.size = 100;
+  createBricks({ width });
+  alert("you lose!");
+}
+function scoreCount({ ctx }) {
+  ctx.fillStyle = "white";
+  ctx.font = "24px Arial";
+  ctx.textAlign = "center";
+  ctx.fillText(score, 10, 20);
+}
 function moveBall({ stepTime, width, height }) {
   // dt = deltatime which uses seconds
   const dt = stepTime / 1000;
@@ -180,10 +200,10 @@ function moveBall({ stepTime, width, height }) {
 function ballCollisionPaddle({ width, height, stepTime }) {
   // if ball collides with paddle, then reverse direction
   //begin hinkle code
-  if (ball.y >= height - 30) {
+  if (ball.y >= height - 30 && ball.y <= height - 10) {
     console.log("in lower segment of screen");
     let ballPaddleDist = Math.abs(paddle.x + paddle.size / 2 - ball.x);
-    if (ballPaddleDist <= 50) {
+    if (ballPaddleDist <= paddle.size / 2) {
       ball.vel.y *= -1;
       ball.y = height - 30 - BALL_RADIUS;
     }
@@ -202,6 +222,9 @@ function ballCollisionWalls({ width, height }) {
   if (ball.y < 0) {
     ball.y = 10;
     ball.vel.y *= -1;
+  }
+  if (ball.y > height) {
+    loseCondition({ width, height });
   }
 }
 
@@ -240,6 +263,7 @@ function ballCollisionBricks({ stepTime }) {
         ball.y = nearestY + Math.sign(dy) * (BALL_RADIUS + 0.1);
       }
       b.alive = false;
+      score += 1;
       // only hit one brick per frame to avoid multiple bounces
       break;
     }
@@ -262,6 +286,7 @@ gi.addDrawing(function ({ ctx, width, height, elapsed, stepTime }) {
   ballCollisionBricks({ stepTime });
   ballCollisionPaddle({ width, height, stepTime });
   ballCollisionWalls({ width, height });
+  scoreCount({ ctx });
 });
 
 /* Input Handlers */
