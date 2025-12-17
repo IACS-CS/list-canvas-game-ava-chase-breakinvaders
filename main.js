@@ -14,7 +14,7 @@ let gi = new GameInterface();
 /* Variables: Top-Level variables defined here are used to hold game state */
 let paddleLaserHits = 0;
 let ball = {
-  x: 100,
+  x: 700,
   y: 100,
   vel: {
     x: 200,
@@ -29,13 +29,14 @@ let paddle = {
   hits: 0,
 };
 let score = 0;
+let highScore = 0;
 
 const BRICK_WIDTH = 100;
 const BRICK_HEIGHT = 20;
 // Laser constants
 const LASER_WIDTH = 6;
 const LASER_HEIGHT = 14;
-const LASER_SPEED = 300; // pixels per second
+const LASER_SPEED = 600; // pixels per second
 
 // list to hold active lasers
 let lasers = [];
@@ -95,15 +96,13 @@ function updateLasers({ stepTime, width, height }) {
       // hit: shrink paddle by 20
       paddle.size = paddle.size - 20;
       paddle.hits += 1;
-      if (paddle.size <= 0)
-        loseCondition({width, height})
+      if (paddle.size <= 0) loseCondition({ width, height });
       // remove the laser
       lasers.splice(i, 1);
     }
   }
 }
-
-
+}
 /**
  * Draw all active lasers on screen.
  */
@@ -127,7 +126,7 @@ let bricks = [];
  * @param {number} [params.y=20] - Y position for the bricks
  * @param {number} [params.gap=5] - Gap between bricks
  */
-function createBricks({ width, cols = 14, y = 20, gap = 5, rows = 3 }) {
+function createBricks({ width, cols = 12, y = 20, gap = 5, rows = 3 }) {
   bricks = [];
   const totalWidth = cols * BRICK_WIDTH + (cols - 1) * gap;
   const startX = Math.max(10, (width - totalWidth) / 2);
@@ -173,10 +172,22 @@ function drawBall({ ctx }) {
   ctx.fill();
   return;
 }
-function winCondition ({width}){
-  
+function isLevelComplete() {
+  // brick counter
+  let aliveBrickCount = 0;
+  for (let i = 0; i < bricks.length; i++) {
+    if (bricks[i].alive) {
+      aliveBrickCount++;
+    }
+  } if (aliveBrickCount === 0) {
+    bricks = [];
+    ball.x = 100
+    ball.y = 100
+    alert("you win!")
+  } else {
+    return false;
+  }
 }
-
 function loseCondition({ width, height }) {
   ball.y = 100;
   ball.x = 100;
@@ -287,6 +298,7 @@ gi.addDrawing(function ({ ctx, width, height, elapsed, stepTime }) {
   ballCollisionPaddle({ width, height, stepTime });
   ballCollisionWalls({ width, height });
   scoreCount({ ctx });
+  isLevelComplete();
 });
 
 /* Input Handlers */
