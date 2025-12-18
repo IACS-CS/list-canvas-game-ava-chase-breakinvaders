@@ -102,6 +102,16 @@ function updateLasers({ stepTime, width, height }) {
     }
   }
 }
+function highScoreCount() {
+  if (score > highScore) {
+    highScore = score;
+  }
+}
+function drawHighScore({ ctx, width, height }) {
+  ctx.fillStyle = "white";
+  ctx.font = "24px Arial";
+  ctx.textAlign = "center";
+  ctx.fillText(highScore, width - 10, 20);
 }
 /**
  * Draw all active lasers on screen.
@@ -299,6 +309,8 @@ gi.addDrawing(function ({ ctx, width, height, elapsed, stepTime }) {
   ballCollisionWalls({ width, height });
   scoreCount({ ctx });
   isLevelComplete();
+  highScoreCount();
+  drawHighScore({ ctx, width, height });
 });
 
 /* Input Handlers */
