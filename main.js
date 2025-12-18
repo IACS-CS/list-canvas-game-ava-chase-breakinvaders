@@ -2,8 +2,10 @@
 /* Game: BreakInvaders */
 /* Authors: Avalynn Annarelli, Chase DeLuca */
 /* Description: Combination of breakout and space invaders, where the invaders are killed via the breakout ball/paddle.*/
-/* Citations: Got help from Mr. Hinkle, Hinkle-helped-code is commented as such.*/
-// Code generated with the help of GitHub Copilot: added brick list and draw/create functions
+/* Citations: Got help from Mr. Hinkle, Hinkle-helped-code is commented as such. AI generated code was also used.
+  We got help from AI for creating the brick objects, fixing the paddle's collision,
+  making the paddle collison hitbox decrease with the paddle size, the drawing functions,
+  the brick's lazers, and the win condition. */
 
 import "./style.css";
 
